@@ -1,0 +1,20 @@
+services:
+  roborock:
+    build: .
+    image: roborock-local-server:latest
+    container_name: roborock-local-server
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    volumes:
+      # Named volume: holds credentials.json and the device cache, survives rebuilds.
+      - roborock-data:/data
+    # The default bridge network can reach the robot on your LAN.
+    # If local connections fail (e.g. strict firewalls), switch to host networking:
+    # network_mode: host
+
+volumes:
+  roborock-data:

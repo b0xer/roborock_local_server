@@ -1,0 +1,109 @@
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --text: #1c1e21;
+  --muted: #6b7280;
+  --border: #e3e5e8;
+  --accent: #2563eb;
+  --accent-text: #ffffff;
+  --danger: #b42318;
+  --danger-bg: #fef3f2;
+  --ok: #157f3b;
+  --warn: #b54708;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317;
+    --card: #1b1e24;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --border: #2c3038;
+    --accent: #4f8cff;
+    --danger: #ff8a80;
+    --danger-bg: #3a1d1b;
+    --ok: #5fd38a;
+    --warn: #f5b25a;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 760px; margin: 0 auto; padding: 16px 16px 4px;
+}
+h1 { font-size: 20px; margin: 0; }
+h2 { font-size: 15px; margin: 0 0 10px; }
+main { max-width: 760px; margin: 0 auto; padding: 8px 16px 32px; }
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; margin-bottom: 12px;
+}
+.muted { color: var(--muted); }
+.pill {
+  font-size: 12px; padding: 3px 10px; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.pill.ok { color: var(--ok); border-color: currentColor; }
+.pill.warn { color: var(--warn); border-color: currentColor; }
+.pill.bad { color: var(--danger); border-color: currentColor; }
+.banner, .error {
+  background: var(--danger-bg); color: var(--danger);
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
+}
+.error { margin: 10px 0 0; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+.row.spread { justify-content: space-between; margin-top: 0; }
+.row.spread h2 { margin: 0; }
+input, select {
+  font: inherit; color: inherit; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; min-width: 0;
+}
+.row input { flex: 1 1 200px; }
+button {
+  font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: progress; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button.link { background: none; border: 0; padding: 0; color: var(--accent); }
+.status-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.state { font-size: 22px; font-weight: 600; text-transform: capitalize; }
+.battery { font-size: 28px; font-weight: 600; }
+.battery small { font-size: 14px; color: var(--muted); }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px; margin: 14px 0 0;
+}
+.grid dt { font-size: 12px; color: var(--muted); }
+.grid dd { margin: 0; text-transform: capitalize; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.rooms { display: flex; flex-wrap: wrap; gap: 8px; }
+.rooms label {
+  border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; cursor: pointer;
+  user-select: none;
+}
+.rooms input { display: none; }
+.rooms label:has(input:checked) { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.settings label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.settings select { color: var(--text); font-size: 15px; }
+.map { text-align: center; margin-top: 10px; }
+.map img { max-width: 100%; border-radius: 8px; image-rendering: pixelated; }
+.consumable { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 6px 0; }
+.bar { grid-column: 1 / -1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: -4px; }
+.bar span { display: block; height: 100%; background: var(--ok); }
+.bar span.low { background: var(--danger); }
+footer { font-size: 13px; text-align: center; margin-top: 18px; }
+footer a { color: var(--accent); }
+code { font-size: 12px; }
+.toast {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+  background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 8px;
+  max-width: calc(100% - 32px); font-size: 14px;
+}

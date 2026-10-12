@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roborock</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23555'/><circle cx='50' cy='38' r='12' fill='%23ddd'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Roborock</h1>
+  <span id="conn" class="pill">…</span>
+</header>
+<main>
+  <div id="banner" class="banner" hidden></div>
+
+  <section id="token-card" class="card" hidden>
+    <h2>API token</h2>
+    <p class="muted">This server requires the token configured in <code>API_TOKEN</code>.</p>
+    <form id="token-form" class="row">
+      <input id="token-input" type="password" placeholder="Token" autocomplete="current-password" required>
+      <button>Save</button>
+    </form>
+  </section>
+
+  <section id="setup-card" class="card" hidden>
+    <h2>Connect your Roborock account</h2>
+    <p class="muted">A one-time login fetches your robot's local key. Afterwards the robot is controlled over your local network.</p>
+    <form id="email-form" class="row">
+      <input id="email" type="email" placeholder="Roborock account email" autocomplete="username" required>
+      <button>Send code</button>
+    </form>
+    <form id="code-form" class="row" hidden>
+      <input id="code" inputmode="numeric" placeholder="Code from email" autocomplete="one-time-code" required>
+      <button>Log in</button>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <section class="card">
+      <div class="status-head">
+        <div>
+          <div id="state" class="state">—</div>
+          <div id="device-name" class="muted"></div>
+        </div>
+        <div class="battery"><span id="battery">—</span><small>%</small></div>
+      </div>
+      <div id="error" class="error" hidden></div>
+      <dl class="grid">
+        <div><dt>Area</dt><dd id="area">—</dd></div>
+        <div><dt>Time</dt><dd id="time">—</dd></div>
+        <div><dt>Mode</dt><dd id="mode">—</dd></div>
+        <div><dt>Fan</dt><dd id="fan">—</dd></div>
+        <div><dt>Water</dt><dd id="water">—</dd></div>
+        <div><dt>Route</dt><dd id="route">—</dd></div>
+      </dl>
+      <div class="controls">
+        <button data-cmd="start" class="primary">Start</button>
+        <button data-cmd="pause">Pause</button>
+        <button data-cmd="stop">Stop</button>
+        <button data-cmd="dock">Dock</button>
+        <button data-cmd="locate">Locate</button>
+        <button data-cmd="dock/empty">Empty bin</button>
+        <button data-cmd="dock/wash">Wash mop</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Rooms</h2>
+      <div id="rooms" class="rooms"><span class="muted">Loading…</span></div>
+      <div class="row">
+        <label>Passes <select id="repeat"><option>1</option><option>2</option><option>3</option></select></label>
+        <button id="clean-rooms" class="primary">Clean selected</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Cleaning settings</h2>
+      <div class="settings">
+        <label>Mode <select data-setting="cleaning_mode" data-options="cleaning_modes"></select></label>
+        <label>Fan <select data-setting="fan_speed" data-options="fan_speeds"></select></label>
+        <label>Water <select data-setting="water_level" data-options="water_levels"></select></label>
+        <label>Route <select data-setting="mop_route" data-options="mop_routes"></select></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row spread"><h2>Map</h2><button id="map-refresh">Refresh</button></div>
+      <div class="map"><img id="map" alt="Map" hidden><span id="map-msg" class="muted">Press refresh to load the map.</span></div>
+    </section>
+
+    <section class="card">
+      <h2>Consumables</h2>
+      <div id="consumables"><span class="muted">Loading…</span></div>
+    </section>
+
+    <section class="card">
+      <h2>History</h2>
+      <dl id="summary" class="grid"></dl>
+    </section>
+
+    <footer class="muted">
+      <a href="/docs">API docs</a> · MCP endpoint: <code id="mcp-url"></code> ·
+      <button id="logout" class="link">Log out</button>
+    </footer>
+  </div>
+</main>
+<div id="toast" class="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
