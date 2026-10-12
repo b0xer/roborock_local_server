@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     """Optional Roborock account email used to pre-fill the login form and CLI prompt."""
 
     host: str = "0.0.0.0"
-    port: int = 8080
+    port: int = 8083
 
     data_dir: Path = Path("data")
     """Directory for credentials and device cache. The container sets this to /data."""

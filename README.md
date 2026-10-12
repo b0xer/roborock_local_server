@@ -16,7 +16,7 @@ cp .env.example .env          # optional: edit settings, see below
 docker compose up -d --build
 ```
 
-Open `http://<server-ip>:8080`, enter your Roborock account email, then type in the code Roborock emails you. That's it. The robot shows up a few seconds later.
+Open `http://<server-ip>:8083`, enter your Roborock account email, then type in the code Roborock emails you. That's it. The robot shows up a few seconds later.
 
 You need Docker Engine with the Compose plugin (`apt install docker.io docker-compose` or Docker's own repository). If your user isn't in the `docker` group, prefix the commands with `sudo`.
 
@@ -44,7 +44,7 @@ All settings are environment variables. Put them in a `.env` file next to `compo
 | `API_TOKEN` | *(empty)* | When set, `/api/*` and `/mcp` require `Authorization: Bearer <token>`. `/api/health` and the UI page stay public, and the UI asks for the token. Generate one with `openssl rand -hex 24`. |
 | `ROBOROCK_DEVICE` | *(empty)* | Robot to control: its name from the Roborock app, or its DUID. Empty picks the first supported vacuum. |
 | `ROBOROCK_EMAIL` | *(empty)* | Pre-fills the login form and CLI prompt. |
-| `PORT` | `8080` | Port for the UI, the API and MCP. |
+| `PORT` | `8083` | Port for the UI, the API and MCP. |
 | `STATUS_CACHE_SECONDS` | `5` | How long one status reading is reused, so several clients polling at once don't flood the robot. |
 | `ALLOW_RAW_COMMANDS` | `false` | Turns on `POST /api/command` and the `send_raw_command` MCP tool. |
 | `LOG_LEVEL` | `INFO` | `DEBUG` shows protocol details. |
@@ -82,21 +82,21 @@ Other CLI commands: `python -m app.cli devices`, `status` and `logout`.
 
 ## REST API
 
-Interactive docs are at `http://<server>:8080/docs`. Add `-H "Authorization: Bearer $API_TOKEN"` to the requests below if you set a token.
+Interactive docs are at `http://<server>:8083/docs`. Add `-H "Authorization: Bearer $API_TOKEN"` to the requests below if you set a token.
 
 ```bash
-curl http://server:8080/api/health                    # public: login/connection state
-curl http://server:8080/api/status                    # battery, state, errors, current settings
-curl http://server:8080/api/rooms                     # [{segment_id, name}]
-curl -X POST http://server:8080/api/start
-curl -X POST http://server:8080/api/pause
-curl -X POST http://server:8080/api/dock
-curl -X POST http://server:8080/api/clean/rooms -H 'Content-Type: application/json' \
+curl http://server:8083/api/health                    # public: login/connection state
+curl http://server:8083/api/status                    # battery, state, errors, current settings
+curl http://server:8083/api/rooms                     # [{segment_id, name}]
+curl -X POST http://server:8083/api/start
+curl -X POST http://server:8083/api/pause
+curl -X POST http://server:8083/api/dock
+curl -X POST http://server:8083/api/clean/rooms -H 'Content-Type: application/json' \
      -d '{"rooms": ["Kitchen", "Hallway"], "repeat": 1}'
-curl http://server:8080/api/options                   # allowed values for /api/settings
-curl -X POST http://server:8080/api/settings -H 'Content-Type: application/json' \
+curl http://server:8083/api/options                   # allowed values for /api/settings
+curl -X POST http://server:8083/api/settings -H 'Content-Type: application/json' \
      -d '{"fan_speed": "turbo", "cleaning_mode": "vac_and_mop"}'
-curl -o map.png http://server:8080/api/map.png
+curl -o map.png http://server:8083/api/map.png
 ```
 
 | Method | Path | Purpose |
@@ -128,7 +128,7 @@ Errors come back as `{"detail": "..."}`:
 
 ## MCP (for AI agents)
 
-The MCP endpoint is `http://<server>:8080/mcp`. It uses the streamable HTTP transport in stateless mode, so clients keep working across server restarts.
+The MCP endpoint is `http://<server>:8083/mcp`. It uses the streamable HTTP transport in stateless mode, so clients keep working across server restarts.
 
 | Tool | What it does |
 |---|---|
@@ -146,7 +146,7 @@ The MCP endpoint is `http://<server>:8080/mcp`. It uses the streamable HTTP tran
 **Claude Code:**
 
 ```bash
-claude mcp add --transport http roborock http://<server>:8080/mcp \
+claude mcp add --transport http roborock http://<server>:8083/mcp \
   --header "Authorization: Bearer <API_TOKEN>"     # omit --header if no token is set
 ```
 
@@ -157,7 +157,7 @@ claude mcp add --transport http roborock http://<server>:8080/mcp \
   "mcpServers": {
     "roborock": {
       "type": "http",
-      "url": "http://<server>:8080/mcp",
+      "url": "http://<server>:8083/mcp",
       "headers": { "Authorization": "Bearer <API_TOKEN>" }
     }
   }

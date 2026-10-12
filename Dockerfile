@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     DATA_DIR=/data \
-    PORT=8080
+    PORT=8083
 
 WORKDIR /srv
 
@@ -23,9 +23,9 @@ RUN pip install --no-deps . \
 
 USER roborock
 VOLUME ["/data"]
-EXPOSE 8080
+EXPOSE 8083
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-    CMD python -c "import os,urllib.request; urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get(\"PORT\",\"8080\")}/api/health', timeout=4)"
+    CMD python -c "import os,urllib.request; urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get(\"PORT\",\"8083\")}/api/health', timeout=4)"
 
 CMD ["python", "-m", "app.main"]

@@ -23,7 +23,6 @@ from roborock.const import (
 )
 from roborock.devices.device import RoborockDevice
 from roborock.devices.device_manager import DeviceManager, UserParams, create_device_manager
-from roborock.devices.file_cache import FileCache
 from roborock.devices.traits.v1 import PropertiesApi
 from roborock.devices.traits.v1.consumeable import ConsumableAttribute
 from roborock.exceptions import (
@@ -34,6 +33,7 @@ from roborock.exceptions import (
 )
 
 from .auth import CredentialStore
+from .cache import SafeFileCache
 from .config import Settings
 
 _LOGGER = logging.getLogger(__name__)
@@ -161,7 +161,7 @@ class RobotService:
     def __init__(self, settings: Settings, store: CredentialStore | None = None) -> None:
         self._settings = settings
         self._store = store or CredentialStore(settings.credentials_path)
-        self._cache = FileCache(settings.cache_path)
+        self._cache = SafeFileCache(settings.cache_path)
         self._manager: DeviceManager | None = None
         self._device: RoborockDevice | None = None
         self._connect_task: asyncio.Task[None] | None = None
@@ -220,7 +220,7 @@ class RobotService:
 
     def _reset_cache(self) -> None:
         self._settings.cache_path.unlink(missing_ok=True)
-        self._cache = FileCache(self._settings.cache_path)
+        self._cache = SafeFileCache(self._settings.cache_path)
 
     async def _flush_cache(self) -> None:
         try:
