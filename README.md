@@ -20,6 +20,21 @@ Open `http://<server-ip>:8080`, enter your Roborock account email, then type in 
 
 You need Docker Engine with the Compose plugin (`apt install docker.io docker-compose` or Docker's own repository). If your user isn't in the `docker` group, prefix the commands with `sudo`.
 
+## Starting on boot
+
+No extra setup is needed. The container uses `restart: unless-stopped`, so Docker starts it again after a reboot. Only make sure the Docker service itself starts at boot (this is the default on Debian):
+
+```bash
+sudo systemctl enable docker
+```
+
+| Task | Command |
+|---|---|
+| Stop | `docker compose stop` (it then stays stopped after reboots until you start it again) |
+| Start | `docker compose up -d` |
+| Update after `git pull` | `docker compose up -d --build` (your login is kept in the volume) |
+| Check | `docker compose ps` and `docker compose logs -f` |
+
 ## Configuration
 
 All settings are environment variables. Put them in a `.env` file next to `compose.yaml`; `.env.example` is a template. Nothing personal is stored in the code or image.
